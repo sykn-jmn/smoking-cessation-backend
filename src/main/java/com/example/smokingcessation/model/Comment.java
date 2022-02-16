@@ -17,20 +17,13 @@ public class Comment {
     @Column(nullable = false, updatable = false)
     private Long id;
 
-    @Column(columnDefinition = "longtext")
+    @Lob
     private String comment;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
-    @OneToMany(mappedBy = "comment")
-    private Set<Comment> replies = new HashSet<>();
-
-    @ManyToOne
-    @JoinColumn(name = "comment_id")
-    private Comment repliedFrom;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -42,7 +35,6 @@ public class Comment {
         this.comment = comment;
         this.post = post;
         this.dateTime = dateTime;
-        this.repliedFrom = null;
         this.user = user;
     }
 
@@ -54,19 +46,7 @@ public class Comment {
         this.user = user;
     }
 
-    public void addAllReplies(ArrayList<Comment> comments){
-        this.replies.addAll(comments);
-    }
-
     public Comment() {
-    }
-
-    public Comment(User commenter, String comment, Post post, HashSet<Comment> replies, Comment repliedFrom, LocalDateTime dateTime) {
-        this.comment = comment;
-        this.post = post;
-        this.replies = replies;
-        this.repliedFrom = repliedFrom;
-        this.dateTime = dateTime;
     }
 
     public Long getId() {
@@ -87,22 +67,6 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
-    }
-
-    public Set<Comment> getReplies() {
-        return replies;
-    }
-
-    public void setReplies(HashSet<Comment> replies) {
-        this.replies = replies;
-    }
-
-    public Comment getRepliedFrom() {
-        return repliedFrom;
-    }
-
-    public void setRepliedFrom(Comment repliedFrom) {
-        this.repliedFrom = repliedFrom;
     }
 
     public LocalDateTime getDateTime() {

@@ -13,7 +13,7 @@ public class Post {
     @Column(nullable = false, updatable = false)
     private Long id;
     private String title;
-    @Column(columnDefinition = "longtext")
+    @Lob
     private String body;
     @ManyToOne
     @JoinColumn(name = "user_id")
