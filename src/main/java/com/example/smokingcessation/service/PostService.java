@@ -44,7 +44,6 @@ public class PostService {
         return posts;
     }
 
-    @Transactional
     public void addComment(String commentBody, String postId, String sessionID){
         Post post = postRepository.findById(postId).get();
         Session session = sessionRepository.findSessionByUuid(sessionID).get();
@@ -53,5 +52,6 @@ public class PostService {
         Comment comment = new Comment(user, commentBody,post, LocalDateTime.now());
         commentRepository.save(comment);
         post.addComment(comment);
+        postRepository.save(post);
     }
 }
