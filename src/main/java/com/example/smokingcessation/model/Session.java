@@ -1,24 +1,23 @@
 package com.example.smokingcessation.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.UUID;
 
-@Entity
-@Table(name="session")
+@Document
 public class Session{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-    @Column(unique = true, nullable = false)
+    private String id;
     private String uuid;
-    private Long userID;
+    private String userID;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public Session(Long userID) {
+    public Session(String userID) {
         this.uuid = UUID.randomUUID().toString();
         this.userID = userID;
     }
@@ -34,11 +33,11 @@ public class Session{
         this.uuid = uuid;
     }
 
-    public Long getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 }

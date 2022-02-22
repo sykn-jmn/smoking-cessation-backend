@@ -43,13 +43,13 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         Post post = new Post(sentPost.getTitle(), sentPost.getBody(), user);
         postRepository.save(post);
     }
 
-    public User getUser(Long id){
+    public User getUser(String id){
         return userRepository.findById(id).get();
     }
 
@@ -60,7 +60,7 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         LocalDate toReturn = user.getLastShowDailyChallenge();
         user.setLastShowDailyChallenge(LocalDate.now());
@@ -72,7 +72,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public LocalDateTime getStartingDate(Long id) {
+    public LocalDateTime getStartingDate(String id) {
         return userRepository.findById(id).get().getStartingDate();
     }
 
@@ -83,7 +83,7 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         double perDay = cost * timesADay;
         double perHour = perDay/24;
         double perMinute = perHour/60;
@@ -101,7 +101,7 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         SubModels.SavedMoneyData savedMoneyData = new SubModels.SavedMoneyData(
                 user.getAmountAddedPerSecond(),
@@ -119,17 +119,17 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         return user.getStoppedSmokingDate();
     }
 
-    public Double getAmountAddedPerSecond(Long id){
+    public Double getAmountAddedPerSecond(String id){
         User user = userRepository.findById(id).get();
         return user.getAmountAddedPerSecond();
     }
 
-    public Integer getTimesSmokedSinceStart(Long id){
+    public Integer getTimesSmokedSinceStart(String id){
         User user = userRepository.findById(id).get();
         return user.getTimesSmokedSinceStart();
     }
@@ -141,7 +141,7 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         String[] dateTime = date.split("T");
         String[] dates = dateTime[0].split("-");
         String[] times = dateTime[1].split(":");
@@ -167,7 +167,7 @@ public class UserService {
         return leaderBoard;
     }
 
-    private int getUserLeaderboardPosition(Long userID){
+    private int getUserLeaderboardPosition(String userID){
         List<User> users = userRepository.findAll();
         Collections.sort(users);
         for(int i = 0; i < 10 && i <users.size(); i++){
@@ -183,7 +183,7 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         user.setLastShowDailyChallenge(LocalDate.now());
     }
@@ -228,7 +228,7 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         return user.getProfileByte();
     }
@@ -239,7 +239,7 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         return new SubModels.UserProfile(
                 user.getUsername(),
@@ -254,7 +254,7 @@ public class UserService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         byte[] byteArray = base64ImageToByteArray(profileImageUpdate.getBase64());
         user.setProfileByte(byteArray);

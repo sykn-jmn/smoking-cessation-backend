@@ -35,7 +35,7 @@ public class BadgeService {
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
-        Long userID = session.getUserID();
+        String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         List<Badge> badges = badgeRepository.findAll();
         ArrayList<SubModels.UserBadge> userBadges = new ArrayList<>();

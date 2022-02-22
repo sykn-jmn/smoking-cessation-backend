@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -103,6 +104,7 @@ public class UserConfig {
         };
     }
 
+    @Transactional
     public static void generatePost(PostRepository postRepository,
                                     CommentRepository commentRepository,
                                     ArrayList<User> userList,
@@ -128,9 +130,9 @@ public class UserConfig {
                     )
             );
         }
-        post.setComments(commentSet);
+        HashSet<Comment> commentSetSaved = new HashSet<>(commentRepository.saveAll(commentSet));
+        post.setComments(commentSetSaved);
         postRepository.save(post);
-        commentRepository.saveAll(commentSet);
     }
 
     public static byte[] getByteArray(String url){

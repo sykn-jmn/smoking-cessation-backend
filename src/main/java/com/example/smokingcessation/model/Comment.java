@@ -1,39 +1,24 @@
 package com.example.smokingcessation.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
-@Entity
-@Table(name = "comment")
+@Document
 public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(nullable = false, updatable = false)
-    private Long id;
+    private String id;
 
-    @Lob
     private String comment;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     private LocalDateTime dateTime;
 
     public Comment(User user, String comment, Post post, LocalDateTime dateTime) {
         this.comment = comment;
-        this.post = post;
+//        this.post = post;
         this.dateTime = dateTime;
         this.user = user;
     }
@@ -49,7 +34,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -61,13 +46,13 @@ public class Comment {
         this.comment = comment;
     }
 
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
+//    public Post getPost() {
+//        return post;
+//    }
+//
+//    public void setPost(Post post) {
+//        this.post = post;
+//    }
 
     public LocalDateTime getDateTime() {
         return dateTime;

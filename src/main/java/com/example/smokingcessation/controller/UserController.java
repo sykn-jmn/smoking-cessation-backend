@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/amountAddedPerSecond/{id}")
-    public ResponseEntity<Double> getAmountAddedPerSecond(@PathVariable("id") long id){
+    public ResponseEntity<Double> getAmountAddedPerSecond(@PathVariable("id") String id){
         return new ResponseEntity<>(userService.getAmountAddedPerSecond(id), HttpStatus.OK);
     }
     @GetMapping("/stoppedSmokingDate/{sessionID}")
@@ -106,7 +106,7 @@ public class UserController {
     }
 
     @GetMapping("/startDate/{id}")
-    public ResponseEntity<String> getStartingDate(@PathVariable("id") Long id){
+    public ResponseEntity<String> getStartingDate(@PathVariable("id") String id){
         LocalDateTime startingDate = userService.getStartingDate(id);
         return new ResponseEntity<>(startingDate.toString(),HttpStatus.OK);
     }
@@ -119,7 +119,7 @@ public class UserController {
     }
 
     @GetMapping("/timesSmokedSinceStart/{id}")
-    public ResponseEntity<Integer> getTimesSmokedSinceStart(@PathVariable("id") Long id){
+    public ResponseEntity<Integer> getTimesSmokedSinceStart(@PathVariable("id") String id){
         return new ResponseEntity<>(userService.getTimesSmokedSinceStart(id), HttpStatus.OK);
     }
 

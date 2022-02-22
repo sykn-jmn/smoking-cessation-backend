@@ -117,7 +117,7 @@ public class SubModels {
 
     public static class AddedComment{
         private String comment;
-        private Long postId;
+        private String postId;
         private String sessionID;
 
         @Override
@@ -132,7 +132,7 @@ public class SubModels {
         public AddedComment() {
         }
 
-        public AddedComment(String comment, Long postId, String sessionID) {
+        public AddedComment(String comment, String postId, String sessionID) {
             this.comment = comment;
             this.postId = postId;
             this.sessionID = sessionID;
@@ -146,11 +146,11 @@ public class SubModels {
             this.comment = comment;
         }
 
-        public Long getPostId() {
+        public String getPostId() {
             return postId;
         }
 
-        public void setPostId(Long postId) {
+        public void setPostId(String postId) {
             this.postId = postId;
         }
 

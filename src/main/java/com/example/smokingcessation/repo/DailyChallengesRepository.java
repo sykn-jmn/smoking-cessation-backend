@@ -1,7 +1,7 @@
 package com.example.smokingcessation.repo;
 
 import com.example.smokingcessation.model.DailyChallenge;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface DailyChallengesRepository extends JpaRepository<DailyChallenge, Long> {
+public interface DailyChallengesRepository extends MongoRepository<DailyChallenge, String> {
 }

@@ -1,25 +1,23 @@
 package com.example.smokingcessation.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "post")
+@Document
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(nullable = false, updatable = false)
-    private Long id;
+    private String id;
     private String title;
-    @Lob
     private String body;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
     private LocalDateTime dateTime;
-    @OneToMany(mappedBy = "post")
+
+    @DBRef
     private Set<Comment> comments;
 
     public Post() {
@@ -49,7 +47,7 @@ public class Post {
         this.user = user;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

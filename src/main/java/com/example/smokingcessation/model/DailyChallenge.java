@@ -1,16 +1,14 @@
 package com.example.smokingcessation.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "dailyChallengeSequence")
+
+@Document
 public class DailyChallenge {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="idgen")
-    @SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "challengeSeq")
-    @Column(nullable = false,updatable = false)
-    public Long id;
-    @Column(length = 1000)
+    public String id;
     public String quote;
 
     public DailyChallenge(){}

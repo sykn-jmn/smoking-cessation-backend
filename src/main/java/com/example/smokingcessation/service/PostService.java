@@ -45,10 +45,10 @@ public class PostService {
     }
 
     @Transactional
-    public void addComment(String commentBody, Long postId, String sessionID){
+    public void addComment(String commentBody, String postId, String sessionID){
         Post post = postRepository.findById(postId).get();
         Session session = sessionRepository.findSessionByUuid(sessionID).get();
-        Long userId = session.getUserID();
+        String userId = session.getUserID();
         User user = userRepository.findById(userId).get();
         Comment comment = new Comment(user, commentBody,post, LocalDateTime.now());
         commentRepository.save(comment);

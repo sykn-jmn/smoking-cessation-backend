@@ -2,22 +2,21 @@ package com.example.smokingcessation.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
-@Entity
-@Table(name = "user")
+@Document
 public class User implements Comparable<User>{
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="idgen")
-    @SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "userSeq")
-    @Column(nullable = false,updatable = false)
-    private Long id;
+    private String id;
     private String username;
     private String password;
     private LocalDate lastShowDailyChallenge;
@@ -28,13 +27,12 @@ public class User implements Comparable<User>{
     private double cost;
     private int timesADay;
     private String city;
-    @Lob
     private byte[] profileByte;
+    @DBRef
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @DBRef
     private Set<Post> posts = new HashSet<>();
 
     public User(String username, String password, double cost, int timesADay, String city, byte[] profileByte) {
@@ -84,7 +82,7 @@ public class User implements Comparable<User>{
     }
 
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

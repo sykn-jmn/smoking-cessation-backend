@@ -1,14 +1,13 @@
 package com.example.smokingcessation.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+
+@Document
 public class Badge {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="idgen")
-    @SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "badgeSeq")
-    @Column(nullable = false,updatable = false)
-    public Long id;
+    public String id;
     public String title;
     public String description;
     public int daysFreeGoal;
@@ -24,7 +23,7 @@ public class Badge {
         this.moneySavedGoal = moneySavedGoal;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

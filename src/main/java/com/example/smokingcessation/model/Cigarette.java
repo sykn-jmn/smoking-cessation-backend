@@ -1,16 +1,13 @@
 package com.example.smokingcessation.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "dailyChallengeSequence")
+@Document
+
 public class Cigarette {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
-    @SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "cigaretteSeq")
-    @Column(nullable = false, updatable = false)
-    public Long id;
-    @Column(length = 1000)
+    public String id;
     public String name;
     public Double price;
 
@@ -22,7 +19,7 @@ public class Cigarette {
     public Cigarette() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
