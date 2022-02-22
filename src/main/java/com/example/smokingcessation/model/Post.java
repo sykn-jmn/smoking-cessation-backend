@@ -14,6 +14,7 @@ public class Post {
     private String id;
     private String title;
     private String body;
+    @DBRef
     private User user;
     private LocalDateTime dateTime;
 
