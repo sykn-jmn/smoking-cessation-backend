@@ -32,7 +32,7 @@ public class UserConfig {
                             MD5Utils.hash("password"),
                             12,
                             5,
-                            "Iligan",
+                            "Marawi",
                             getByteArray("startPics/jeman.png"))
             );
             users.add(
