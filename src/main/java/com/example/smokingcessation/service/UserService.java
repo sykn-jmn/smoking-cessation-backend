@@ -171,7 +171,7 @@ public class UserService {
         List<User> users = userRepository.findAll();
         Collections.sort(users);
         for(int i = 0; i < 10 && i <users.size(); i++){
-            if(users.get(i).getId() == userID) return i+1;
+            if(users.get(i).getId().equalsIgnoreCase(userID)) return i+1;
         }
         throw new IllegalStateException("Invalid User ID");
     }
