@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 
-@Configuration
+//@Configuration
 public class BadgeConfig {
-    @Bean
+//    @Bean
     CommandLineRunner commandLineRunnerBadge(BadgeRepository repository){
         return args -> {
             ArrayList<Badge> badges = new ArrayList<>();

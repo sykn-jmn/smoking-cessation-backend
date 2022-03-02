@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
-@Configuration
+//@Configuration
 public class PostConfig {
-    @Bean
+//    @Bean
     CommandLineRunner commandLineRunnerPost(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository){
         return args -> {
 
