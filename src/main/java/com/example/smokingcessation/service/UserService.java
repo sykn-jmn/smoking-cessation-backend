@@ -64,6 +64,7 @@ public class UserService {
         User user = userRepository.findById(userID).get();
         LocalDate toReturn = user.getLastShowDailyChallenge();
         user.setLastShowDailyChallenge(LocalDate.now());
+        userRepository.save(user);
         return toReturn;
     }
 
@@ -92,6 +93,7 @@ public class UserService {
         user.setAmountAddedPerSecond(perSecond);
         user.setCost(cost);
         user.setTimesADay(timesADay);
+        userRepository.save(user);
         return perSecond;
     }
 
@@ -187,6 +189,7 @@ public class UserService {
         String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         user.setLastShowDailyChallenge(LocalDate.now());
+        userRepository.save(user);
     }
 
     public User signUpUser(User user){
