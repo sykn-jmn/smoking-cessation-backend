@@ -153,6 +153,7 @@ public class UserService {
                 Integer.parseInt(times[2].split("\\.")[0]));
         User user = userRepository.findById(userID).get();
         user.setStoppedSmokingDate(newStoppedSmokingDate);
+        userRepository.save(user);
         return newStoppedSmokingDate;
     }
 
