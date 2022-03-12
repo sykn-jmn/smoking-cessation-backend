@@ -218,6 +218,8 @@ public class UserService {
                 Session session = new Session(user.getId());
                 sessionRepository.save(session);
                 sessionId = session.getUuid();
+            }else{
+                return "Invalid Login";
             }
             return sessionId;
         }
