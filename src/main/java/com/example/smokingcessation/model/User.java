@@ -46,7 +46,7 @@ public class User implements Comparable<User>{
         double perMinute = perHour/60;
         double perSecond = perMinute/60;
         this.amountAddedPerSecond = perSecond;
-        this.stoppedSmokingDate = LocalDateTime.now().minus(8,ChronoUnit.HOURS);
+        this.stoppedSmokingDate = LocalDateTime.now().plus(8,ChronoUnit.HOURS);
         timesSmokedSinceStart=0;
         this.cost = cost;
         this.timesADay = timesADay;
