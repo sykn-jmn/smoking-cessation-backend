@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
 import java.util.*;
 
 
@@ -45,7 +46,7 @@ public class User implements Comparable<User>{
         double perMinute = perHour/60;
         double perSecond = perMinute/60;
         this.amountAddedPerSecond = perSecond;
-        this.stoppedSmokingDate = LocalDateTime.now();
+        this.stoppedSmokingDate = LocalDateTime.now().minus(8,ChronoUnit.HOURS);
         timesSmokedSinceStart=0;
         this.cost = cost;
         this.timesADay = timesADay;
