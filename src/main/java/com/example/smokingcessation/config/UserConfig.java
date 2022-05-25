@@ -91,7 +91,7 @@ public class UserConfig {
                     commentRepository,
                     savedUsers,
                     "Why did u quit Smoking?",
-                    "Filipino students arent a stranger tk terms such as \"walwal\" and \"vape on\". As a student did/do you have vices? smoking or drinking alcohol? What caused you to do it? And what made you turn your back at it? Did school, peers, family played a role into making you quit? Or did you made the decision yourself for the better? I need information about a story im making about students overcoming their vices.",
+                    "Filipino  students arent a stranger tk terms such as \"walwal\" and \"vape on\". As a student did/do you have vices? smoking or drinking alcohol? What caused you to do it? And what made you turn your back at it? Did school, peers, family played a role into making you quit? Or did you made the decision yourself for the better? I need information about a story im making about students overcoming their vices.",
                     "I was in the smoking area one day overlooking the highway. The smog from the jeepneys and buses mixing with the smoke from our cigarettes. On the other side of the street are some homeless families sleeping. I realize that here I am, a third world man living in a third world country contributing to the cliché of a third world habit and i wanted none of it anymore. So i quit.",
                     "Ang hirap kasi umakyat sa lrt pag mahina baga.",
                     "Health paranoia made me stop.\n" +
