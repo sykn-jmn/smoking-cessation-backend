@@ -1,16 +1,11 @@
 package com.example.smokingcessation.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.util.*;
 
 
 @Document
@@ -29,12 +24,6 @@ public class User implements Comparable<User>{
     private int timesADay;
     private String city;
     private byte[] profileByte;
-    @DBRef
-    @JsonIgnore
-    private Set<Comment> comments = new HashSet<>();
-
-    @DBRef
-    private Set<Post> posts = new HashSet<>();
 
     public User(String username, String password, double cost, int timesADay, String city, byte[] profileByte) {
         this.username = username;

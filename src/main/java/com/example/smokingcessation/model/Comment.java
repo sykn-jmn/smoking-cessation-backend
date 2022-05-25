@@ -1,6 +1,6 @@
 package com.example.smokingcessation.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,17 +8,18 @@ import java.time.LocalDateTime;
 
 @Document
 public class Comment {
+    @Id
     private String id;
-
     private String comment;
-
+    @DBRef
     private User user;
-
     private LocalDateTime dateTime;
+    @DBRef
+    private Post post;
 
     public Comment(User user, String comment, Post post, LocalDateTime dateTime) {
         this.comment = comment;
-//        this.post = post;
+        this.post = post;
         this.dateTime = dateTime;
         this.user = user;
     }
@@ -46,13 +47,13 @@ public class Comment {
         this.comment = comment;
     }
 
-//    public Post getPost() {
-//        return post;
-//    }
-//
-//    public void setPost(Post post) {
-//        this.post = post;
-//    }
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
 
     public LocalDateTime getDateTime() {
         return dateTime;

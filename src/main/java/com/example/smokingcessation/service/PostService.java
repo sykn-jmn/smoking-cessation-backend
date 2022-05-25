@@ -40,7 +40,6 @@ public class PostService {
         List<Post> posts = postRepository.findAll();
         posts.sort(Comparator.comparing(Post::getDateTime));
         Collections.reverse(posts);
-//        Comparator.comparing(Post::getDateTime)
         return posts;
     }
 

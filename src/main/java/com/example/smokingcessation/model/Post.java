@@ -17,7 +17,6 @@ public class Post {
     @DBRef
     private User user;
     private LocalDateTime dateTime;
-
     @DBRef
     private Set<Comment> comments;
 
