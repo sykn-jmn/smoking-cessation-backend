@@ -14,12 +14,9 @@ public class Comment {
     @DBRef
     private User user;
     private LocalDateTime dateTime;
-    @DBRef
-    private Post post;
 
-    public Comment(User user, String comment, Post post, LocalDateTime dateTime) {
+    public Comment(User user, String comment, LocalDateTime dateTime) {
         this.comment = comment;
-        this.post = post;
         this.dateTime = dateTime;
         this.user = user;
     }
@@ -45,14 +42,6 @@ public class Comment {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
     }
 
     public LocalDateTime getDateTime() {

@@ -48,7 +48,7 @@ public class PostService {
         Session session = sessionRepository.findSessionByUuid(sessionID).get();
         String userId = session.getUserID();
         User user = userRepository.findById(userId).get();
-        Comment comment = new Comment(user, commentBody,post, LocalDateTime.now());
+        Comment comment = new Comment(user, commentBody, LocalDateTime.now());
         commentRepository.save(comment);
         post.addComment(comment);
         postRepository.save(post);

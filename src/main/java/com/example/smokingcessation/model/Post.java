@@ -5,7 +5,9 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Document
@@ -18,7 +20,7 @@ public class Post {
     private User user;
     private LocalDateTime dateTime;
     @DBRef
-    private Set<Comment> comments;
+    private List<Comment> comments;
 
     public Post() {
     }
@@ -27,11 +29,11 @@ public class Post {
         this.title = title;
         this.body = body;
         this.user = user;
-        this.comments = new HashSet<Comment>();
+        this.comments = new ArrayList<>();
         this.dateTime = LocalDateTime.now();
     }
 
-    public Post(String title, String body, LocalDateTime dateTime, HashSet<Comment> comments, User user) {
+    public Post(String title, String body, LocalDateTime dateTime, ArrayList<Comment> comments, User user) {
         this.title = title;
         this.body = body;
         this.user = user;
@@ -75,11 +77,11 @@ public class Post {
         this.dateTime = dateTime;
     }
 
-    public Set<Comment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(HashSet<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 

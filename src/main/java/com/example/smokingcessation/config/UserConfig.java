@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 @Configuration
@@ -55,10 +56,10 @@ public class UserConfig {
                     0,
                     getByteArray("startPics/genrev.png")
             ));
-            userRepository.saveAll(users);
+            List<User> savedUsers = userRepository.saveAll(users);
             generatePost(postRepository,
                     commentRepository,
-                    users,
+                    savedUsers,
                     "Former smokers",
                     "How did you quit?\n" +
                             "\n" +
@@ -88,7 +89,7 @@ public class UserConfig {
                     "I started 2001 (1st year high school), stopped cold turkey 2011. Mura pa yosi nung time ko, lahat naka Marlboro golds or black hehe nasa 30 or 40 pesos lang yata. Nag quit ako when I started going to the gym and also realizing the long term negative effects of the vice. The battle is mostly psychologically, it's your mind craving for it.. I try to carry candy/gums with me and pag lunch break, avoid yosi break sessions second hand smoke is worse I heard. Get a hobby, new interests, anything that can keep your mind away from smoking. And sumama ka sa mga tao na hindi nagyoyosi, hahaha yan pinka effective.");
             generatePost(postRepository,
                     commentRepository,
-                    users,
+                    savedUsers,
                     "Why did u quit Smoking?",
                     "Filipino students arent a stranger tk terms such as \"walwal\" and \"vape on\". As a student did/do you have vices? smoking or drinking alcohol? What caused you to do it? And what made you turn your back at it? Did school, peers, family played a role into making you quit? Or did you made the decision yourself for the better? I need information about a story im making about students overcoming their vices.",
                     "I was in the smoking area one day overlooking the highway. The smog from the jeepneys and buses mixing with the smoke from our cigarettes. On the other side of the street are some homeless families sleeping. I realize that here I am, a third world man living in a third world country contributing to the cliché of a third world habit and i wanted none of it anymore. So i quit.",
@@ -104,10 +105,10 @@ public class UserConfig {
         };
     }
 
-//    @Transactional
+    @Transactional
     public static void generatePost(PostRepository postRepository,
                                     CommentRepository commentRepository,
-                                    ArrayList<User> userList,
+                                    List<User> userList,
                                     String postTitle,
                                     String postBody,
                                     String ... comments){
@@ -115,7 +116,7 @@ public class UserConfig {
                 postTitle,
                 postBody,
                 LocalDateTime.now(),
-                new HashSet<>(),
+                new ArrayList<>(),
                 userList.get(new Random().nextInt(userList.size()))
         );
         HashSet<Comment> commentSet = new HashSet<>();
@@ -125,13 +126,12 @@ public class UserConfig {
                     new Comment(
                             userList.get(new Random().nextInt(userList.size())),
                             comment,
-                            post,
                             LocalDateTime.of(rand.nextInt(4)+2017,rand.nextInt(12)+1,rand.nextInt(20)+1, rand.nextInt(12),rand.nextInt(58),rand.nextInt(58))
                     )
             );
         }
-        HashSet<Comment> commentSetSaved = new HashSet<>(commentRepository.saveAll(commentSet));
-        post.setComments(commentSetSaved);
+        List<Comment> savedComments = commentRepository.saveAll(commentSet);
+        post.setComments(savedComments);
         postRepository.save(post);
     }
 
