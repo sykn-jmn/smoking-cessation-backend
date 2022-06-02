@@ -19,9 +19,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-//@Configuration
+@Configuration
 public class UserConfig {
-//    @Bean
+    @Bean
     CommandLineRunner commandLineRunnerUser(CigaretteRepository cigaretteRepository, SmokingRecordRepository smokingRecordRepository, UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository){
         return args -> {
             ArrayList<Cigarette> cigarettes = new ArrayList<>();
