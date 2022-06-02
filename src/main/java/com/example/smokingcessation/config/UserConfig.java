@@ -107,7 +107,7 @@ public class UserConfig {
                             "I've tried quitting countless times. I also fail everytime. The craving gets too intense and I find myself getting antsy with every second. When a craving hits, it doesn't go away. I'm like that with most things e (cigarettes, food, etc).\n" +
                             "\n" +
                             "So... pahingi namang tips o.",
-                    "Hey. I know this might be something that you won't expect but maybe you should try to see a psychologist to help with your addiction. I think it'd be nice to get a professional perspective. I'm pretty sure they can help.\n" +
+                    "Hey. I know this might be something that you won't expect but maybe you should try to see a psychologist to help with your addiction. I think i t'd be nice to get a professional perspective. I'm pretty sure they can help.\n" +
                             "\n" +
                             "Maybe you can also try to lessen your intake a day. If you're doing 6 sticks a day maybe try to do 5x a day then slowly cut the number per week (or whatever time frame suits you).\n" +
                             "\n" +
