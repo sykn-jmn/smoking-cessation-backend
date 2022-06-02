@@ -5,6 +5,25 @@ import java.time.LocalDateTime;
 
 public class SubModels {
 
+    public static class SmokingRecordDTO{
+        Integer numberOfTimesSmoked;
+
+        public SmokingRecordDTO() {
+        }
+
+        public SmokingRecordDTO(Integer numberOfTimesSmoked) {
+            this.numberOfTimesSmoked = numberOfTimesSmoked;
+        }
+
+        public Integer getNumberOfTimesSmoked() {
+            return numberOfTimesSmoked;
+        }
+
+        public void setNumberOfTimesSmoked(Integer numberOfTimesSmoked) {
+            this.numberOfTimesSmoked = numberOfTimesSmoked;
+        }
+    }
+
     public static class SentPost{
         String title;
         String sessionID;
@@ -167,14 +186,12 @@ public class SubModels {
         private String username;
         private String password;
         private Cigarette cigarette;
-        private Integer timesADay;
         private String city;
 
-        public UserRegistration(String username, String password, Cigarette cigarette, Integer timesADay, String city) {
+        public UserRegistration(String username, String password, Cigarette cigarette, String city) {
             this.username = username;
             this.password = password;
             this.cigarette = cigarette;
-            this.timesADay = timesADay;
             this.city = city;
         }
 
@@ -203,14 +220,6 @@ public class SubModels {
 
         public void setCigarette(Cigarette cigarette) {
             this.cigarette = cigarette;
-        }
-
-        public Integer getTimesADay() {
-            return timesADay;
-        }
-
-        public void setTimesADay(Integer timesADay) {
-            this.timesADay = timesADay;
         }
 
         public String getCity() {
@@ -391,12 +400,10 @@ public class SubModels {
     public static class SmokingData{
         private String sessionID;
         private Cigarette cigarette;
-        private Integer timesADay;
 
-        public SmokingData(String sessionID, Cigarette cigarette, Integer timesADay) {
+        public SmokingData(String sessionID, Cigarette cigarette) {
             this.sessionID = sessionID;
             this.cigarette = cigarette;
-            this.timesADay = timesADay;
         }
 
         public SmokingData() {
@@ -406,25 +413,17 @@ public class SubModels {
         public void setId(String sessionID) { this.sessionID = sessionID; }
         public Cigarette getCigarette() { return cigarette; }
         public void setCigarette(Cigarette cigarette) { this.cigarette = cigarette; }
-        public Integer getTimesADay() { return timesADay; }
-        public void setTimesADay(Integer timesADay) { this.timesADay = timesADay; }
     }
 
     public static class SavedMoneyData{
-        private Double amountAddedPerSecond;
-        private Double cost;
-        private Integer timesADay;
+        private Cigarette cigarette;
         private Integer timesSmokedSinceStart;
         private LocalDateTime startingDate;
-        public Double getCost() { return cost; }
-        public void setCost(Double cost) { this.cost = cost; }
-        public Integer getTimesADay() { return timesADay; }
-        public void setTimesADay(Integer timesADay) { this.timesADay = timesADay; }
-        public Double getAmountAddedPerSecond() {
-            return amountAddedPerSecond;
+        public Cigarette getCigarette() {
+            return cigarette;
         }
-        public void setAmountAddedPerSecond(Double amountAddedPerSecond) {
-            this.amountAddedPerSecond = amountAddedPerSecond;
+        public void setCigarette(Cigarette cigarette) {
+            this.cigarette = cigarette;
         }
         public Integer getTimesSmokedSinceStart() {
             return timesSmokedSinceStart;
@@ -444,11 +443,9 @@ public class SubModels {
         public SavedMoneyData() {
         }
 
-        public SavedMoneyData(Double amountAddedPerSecond, LocalDateTime startingDate, Double cost, Integer timesADay, Integer timesSmokedSinceStart) {
-            this.amountAddedPerSecond = amountAddedPerSecond;
-            this.cost = cost;
-            this.timesADay = timesADay;
-            this.timesSmokedSinceStart=timesSmokedSinceStart;
+        public SavedMoneyData(Cigarette cigarette, Integer timesSmokedSinceStart, LocalDateTime startingDate) {
+            this.cigarette = cigarette;
+            this.timesSmokedSinceStart = timesSmokedSinceStart;
             this.startingDate = startingDate;
         }
     }

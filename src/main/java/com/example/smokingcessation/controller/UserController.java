@@ -1,6 +1,7 @@
 package com.example.smokingcessation.controller;
 
 
+import com.example.smokingcessation.model.SmokingRecord;
 import com.example.smokingcessation.model.SubModels;
 import com.example.smokingcessation.model.User;
 import com.example.smokingcessation.repo.UserRepository;
@@ -73,6 +74,7 @@ public class UserController {
     }
 
 
+
     @PostMapping(
             value = "/setStoppedSmokingDate",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -86,17 +88,25 @@ public class UserController {
             value = "/smokingData",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Double> setAmountAddedPerSecond(@RequestBody SubModels.SmokingData smokingData){
-        System.out.println(smokingData);
         Double newAmountAddedPerSecond = userService.saveSmokingData(
                 smokingData.getSessionID(),
-                smokingData.getCigarette().getPrice(),
-                smokingData.getTimesADay());
+                smokingData.getCigarette());
         return new ResponseEntity<>(newAmountAddedPerSecond, HttpStatus.OK);
     }
 
     @GetMapping("/savedMoneyData/{sessionID}")
     public ResponseEntity<SubModels.SavedMoneyData> getSavedMoneyDate(@PathVariable("sessionID")String sessionID){
         return new ResponseEntity<>(userService.getSavedMoneyData(sessionID), HttpStatus.OK);
+    }
+
+    @GetMapping("/smokingRecord/{sessionID}")
+    public ResponseEntity<List<SmokingRecord>> getSmokingRecord(@PathVariable("sessionID") String sessionID){
+        return new ResponseEntity<>(userService.getSmokingRecord(sessionID), HttpStatus.OK);
+    }
+
+    @PostMapping("/smokingRecord/{sessionID}")
+    public ResponseEntity<Void> submitSmokingRecord(@PathVariable("sessionID")String sessionID, @RequestBody SubModels.SmokingRecordDTO smokingRecordDTO){
+        return new ResponseEntity<>(userService.submitSmokingRecord(sessionID, smokingRecordDTO), HttpStatus.OK);
     }
 
     @GetMapping("/dailyTask/{sessionID}")

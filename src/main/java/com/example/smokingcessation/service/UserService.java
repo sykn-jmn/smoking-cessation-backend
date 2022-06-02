@@ -1,26 +1,22 @@
 package com.example.smokingcessation.service;
 
-import com.example.smokingcessation.model.Post;
-import com.example.smokingcessation.model.Session;
-import com.example.smokingcessation.model.SubModels;
-import com.example.smokingcessation.model.User;
+import com.example.smokingcessation.model.*;
 import com.example.smokingcessation.repo.PostRepository;
 import com.example.smokingcessation.repo.SessionRepository;
+import com.example.smokingcessation.repo.SmokingRecordRepository;
 import com.example.smokingcessation.repo.UserRepository;
 import com.example.smokingcessation.security.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,12 +25,14 @@ public class UserService {
     private UserRepository userRepository;
     private final PostRepository postRepository;
     private final SessionRepository sessionRepository;
+    private final SmokingRecordRepository smokingRecordRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, SessionRepository sessionRepository, PostRepository postRepository){
+    public UserService(UserRepository userRepository, SessionRepository sessionRepository, PostRepository postRepository, SmokingRecordRepository smokingRecordRepository){
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
         this.postRepository = postRepository;
+        this.smokingRecordRepository = smokingRecordRepository;
     }
 
     public void post(SubModels.SentPost sentPost){
@@ -78,23 +76,17 @@ public class UserService {
     }
 
     @Transactional
-    public Double saveSmokingData(String sessionID, double cost, int timesADay) {
+    public Double saveSmokingData(String sessionID, Cigarette cigarette) {
         Optional<Session> sessionOptional = sessionRepository.findSessionByUuid(sessionID);
         if(!sessionOptional.isPresent()){
             throw new IllegalStateException("Invalid Session");
         }
         Session session = sessionOptional.get();
         String userID = session.getUserID();
-        double perDay = cost * timesADay;
-        double perHour = perDay/24;
-        double perMinute = perHour/60;
-        double perSecond = perMinute/60;
         User user = userRepository.findById(userID).get();
-        user.setAmountAddedPerSecond(perSecond);
-        user.setCost(cost);
-        user.setTimesADay(timesADay);
+        user.setCigarette(cigarette);
         userRepository.save(user);
-        return perSecond;
+        return 0.0;
     }
 
     public SubModels.SavedMoneyData getSavedMoneyData(String sessionID){
@@ -106,11 +98,9 @@ public class UserService {
         String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         SubModels.SavedMoneyData savedMoneyData = new SubModels.SavedMoneyData(
-                user.getAmountAddedPerSecond(),
-                user.getStartingDate(),
-                user.getCost(),
-                user.getTimesADay(),
-                user.getTimesSmokedSinceStart()
+                user.getCigarette(),
+                user.getTimesSmokedSinceStart(),
+                user.getStartingDate()
         );
         return savedMoneyData;
     }
@@ -162,12 +152,28 @@ public class UserService {
     public List<SubModels.LeaderBoardUser> getLeaderBoard(){
         List<User> users = userRepository.findAll();
         Collections.sort(users);
-        List<SubModels.LeaderBoardUser> leaderBoard = new ArrayList<>();
-        for(int i = 0; i <10 && i <users.size(); i++){
-            User user = users.get(i);
-            leaderBoard.add(new SubModels.LeaderBoardUser(user.getUsername(),user.getScore(), user.getCity()));
-        }
-        return leaderBoard;
+        List<SmokingRecord> smokingRecords = smokingRecordRepository.findAll();
+        List<SubModels.LeaderBoardUser> scores = new ArrayList<>();
+        smokingRecords.forEach(smokingRecord -> {
+            Optional<SubModels.LeaderBoardUser> scoreWithCurrentUser = scores
+                    .stream().filter(score->score.getUsername().equals(smokingRecord.getUser().getUsername()))
+                    .findAny();
+            int currScore = (25-smokingRecord.getQuantity());
+            if(scoreWithCurrentUser.isPresent()){
+                SubModels.LeaderBoardUser score = scoreWithCurrentUser.get();
+                score.setScore(score.getScore()+currScore);
+            }else{
+                scores.add(new SubModels.LeaderBoardUser(smokingRecord.getUser().getUsername(),currScore,smokingRecord.getUser().getCity()));
+            }
+        });
+
+        List<SubModels.LeaderBoardUser> sortedLeaderboard = scores
+                .stream()
+                .sorted(Comparator.comparingInt(SubModels.LeaderBoardUser::getScore).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+
+        return sortedLeaderboard;
     }
 
     private int getUserLeaderboardPosition(String userID){
@@ -282,5 +288,32 @@ public class UserService {
     @Transactional
     public void removeSession(String sessionID) {
         sessionRepository.removeSessionByUuid(sessionID);
+    }
+
+    public List<SmokingRecord> getSmokingRecord(String sessionID) {
+        Optional<Session> sessionOptional = sessionRepository.findSessionByUuid(sessionID);
+        if(!sessionOptional.isPresent()){
+            throw new IllegalStateException("Invalid Session");
+        }
+        Session session = sessionOptional.get();
+        String userID = session.getUserID();
+        User user = userRepository.findById(userID).get();
+        System.out.println("Getting Smoking Records");
+        List<SmokingRecord> smokingRecords = smokingRecordRepository.findByUserOrderByDateTimeAsc(user);
+        System.out.println("Finished Getting Smoking Records");
+        return smokingRecords;
+    }
+
+    public Void submitSmokingRecord(String sessionID, SubModels.SmokingRecordDTO smokingRecordDTO) {
+        Optional<Session> sessionOptional = sessionRepository.findSessionByUuid(sessionID);
+        if(!sessionOptional.isPresent()){
+            throw new IllegalStateException("Invalid Session");
+        }
+        Session session = sessionOptional.get();
+        String userID = session.getUserID();
+        User user = userRepository.findById(userID).get();
+        SmokingRecord smokingRecord = new SmokingRecord(user, user.getCigarette(), smokingRecordDTO.getNumberOfTimesSmoked(), LocalDateTime.now().plus(8, ChronoUnit.HOURS));
+        smokingRecordRepository.save(smokingRecord);
+        return null;
     }
 }

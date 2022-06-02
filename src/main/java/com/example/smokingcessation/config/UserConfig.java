@@ -1,11 +1,7 @@
 package com.example.smokingcessation.config;
 
-import com.example.smokingcessation.model.Comment;
-import com.example.smokingcessation.model.Post;
-import com.example.smokingcessation.model.User;
-import com.example.smokingcessation.repo.CommentRepository;
-import com.example.smokingcessation.repo.PostRepository;
-import com.example.smokingcessation.repo.UserRepository;
+import com.example.smokingcessation.model.*;
+import com.example.smokingcessation.repo.*;
 import com.example.smokingcessation.security.MD5Utils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,42 +19,77 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-//@Configuration
+@Configuration
 public class UserConfig {
-//    @Bean
-    CommandLineRunner commandLineRunnerUser(UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository){
+    @Bean
+    CommandLineRunner commandLineRunnerUser(CigaretteRepository cigaretteRepository, SmokingRecordRepository smokingRecordRepository, UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository){
         return args -> {
+            ArrayList<Cigarette> cigarettes = new ArrayList<>();
+
+            BufferedReader br = new BufferedReader(
+                    new FileReader("src/main/java/com/example/smokingcessation/CigarettePrices.txt"));
+
+            String line = br.readLine();
+            while(line!=null){
+                String[] split = line.split(",");
+                cigarettes.add(new Cigarette(split[0],Double.parseDouble(split[1])));
+                line = br.readLine();
+            }
+            List<Cigarette> savedCigarettes = cigaretteRepository.saveAll(cigarettes);
+
             ArrayList<User> users = new ArrayList<>();
 
             users.add(
                     new User("jeman",
                             MD5Utils.hash("password"),
-                            12,
-                            5,
                             "Marawi",
-                            getByteArray("startPics/jeman.png"))
+                            getByteArray("startPics/jeman.png"),
+                            savedCigarettes.get(0))
             );
             users.add(
                     new User("albrent",
                             MD5Utils.hash("password"),
-                            12,
-                            8,
                             "Iligan",
-                            getByteArray("startPics/albrent.png")));
-            users.add(new User(
-                    "genrev",
+                            getByteArray("startPics/albrent.png"),
+                            savedCigarettes.get(0)));
+            User genrev = new User("genrev",
                     MD5Utils.hash("password"),
                     "Ozamiz",
-                    LocalDate.of(1999,9,9),
-                    LocalDateTime.of(2021,10,12,0,0,0),
-                    0.1,
-                    LocalDateTime.of(2021,10,19,0,0,0),
-                    7,
-                    0,
-                    0,
-                    getByteArray("startPics/genrev.png")
-            ));
+                    getByteArray("startPics/genrev.png"),
+                    savedCigarettes.get(0));
+            genrev.setStartingDate(LocalDateTime.of(1999,9,9,12,12,12));
+            genrev.setStoppedSmokingDate(LocalDateTime.of(1999,9,9,12,12,12));
+            users.add(genrev);
             List<User> savedUsers = userRepository.saveAll(users);
+
+            //Jeman
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(0),savedCigarettes.get(2),9,LocalDateTime.of(2022,6,2,12,30)));
+
+            //Albrent
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(1),savedCigarettes.get(2),9,LocalDateTime.of(2022,5,9,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(1),savedCigarettes.get(2),7,LocalDateTime.of(2022,5,10,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(1),savedCigarettes.get(2),7,LocalDateTime.of(2022,5,11,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(1),savedCigarettes.get(2),6,LocalDateTime.of(2022,5,12,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(1),savedCigarettes.get(2),4,LocalDateTime.of(2022,5,13,12,30)));
+
+
+            //Genrev
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),5,LocalDateTime.of(2022,5,19,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(1),3,LocalDateTime.of(2022,5,20,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),9,LocalDateTime.of(2022,5,21,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),8,LocalDateTime.of(2022,5,22,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(1),8,LocalDateTime.of(2022,5,23,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),6,LocalDateTime.of(2022,5,24,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),4,LocalDateTime.of(2022,5,25,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(1),5,LocalDateTime.of(2022,5,26,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(1),5,LocalDateTime.of(2022,5,27,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),4,LocalDateTime.of(2022,5,28,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),3,LocalDateTime.of(2022,5,29,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),1,LocalDateTime.of(2022,5,30,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),3,LocalDateTime.of(2022,6,1,12,30)));
+            smokingRecordRepository.save(new SmokingRecord(savedUsers.get(2),savedCigarettes.get(0),1,LocalDateTime.of(2022,6,2,12,30)));
+
+
             generatePost(postRepository,
                     commentRepository,
                     savedUsers,

@@ -25,10 +25,9 @@ public class RegistrationService {
         User user = new User(
                 userRegistration.getUsername(),
                 userRegistration.getPassword(),
-                userRegistration.getCigarette().getPrice(),
-                userRegistration.getTimesADay(),
                 userRegistration.getCity(),
-                UserConfig.getByteArray("startPics/default.png")
+                UserConfig.getByteArray("startPics/default.png"),
+                userRegistration.getCigarette()
         );
         user = userService.signUpUser(user);
         Session session = new Session(user.getId());

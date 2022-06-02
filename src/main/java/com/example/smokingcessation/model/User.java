@@ -1,6 +1,7 @@
 package com.example.smokingcessation.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
@@ -17,44 +18,25 @@ public class User implements Comparable<User>{
     private String password;
     private LocalDate lastShowDailyChallenge;
     private LocalDateTime startingDate;
-    private double amountAddedPerSecond;
     private LocalDateTime stoppedSmokingDate;
     private int timesSmokedSinceStart;
-    private double cost;
     private int timesADay;
     private String city;
+    @DBRef
+    private Cigarette cigarette;
     private byte[] profileByte;
 
-    public User(String username, String password, double cost, int timesADay, String city, byte[] profileByte) {
+    public User(String username, String password, String city, byte[] profileByte, Cigarette cigarette) {
         this.username = username;
         this.password = password;
         this.lastShowDailyChallenge = LocalDate.of(1999,2,10);
-        this.startingDate = LocalDateTime.now();
-        double perDay = cost * timesADay;
-        double perHour = perDay/24;
-        double perMinute = perHour/60;
-        double perSecond = perMinute/60;
-        this.amountAddedPerSecond = perSecond;
+        this.startingDate = LocalDateTime.now().plus(8,ChronoUnit.HOURS);
         this.stoppedSmokingDate = LocalDateTime.now().plus(8,ChronoUnit.HOURS);
         timesSmokedSinceStart=0;
-        this.cost = cost;
-        this.timesADay = timesADay;
+        this.timesADay = 25;
         this.city = city;
         this.profileByte = profileByte;
-    }
-
-    public User(String username,String password, String city, LocalDate showDailyChallenge, LocalDateTime startingDate, double amountAddedPerSecond, LocalDateTime stoppedSmokingDate, int timesSmokedSinceStart, double cost, int timesADay, byte[] profileByte) {
-        this.username = username;
-        this.password = password;
-        this.city = city;
-        this.lastShowDailyChallenge = showDailyChallenge;
-        this.startingDate = startingDate;
-        this.amountAddedPerSecond = amountAddedPerSecond;
-        this.stoppedSmokingDate = stoppedSmokingDate;
-        this.timesSmokedSinceStart = timesSmokedSinceStart;
-        this.cost = cost;
-        this.timesADay = timesADay;
-        this.profileByte = profileByte;
+        this.cigarette = cigarette;
     }
 
     public User() {
@@ -64,13 +46,20 @@ public class User implements Comparable<User>{
         this.password = password;
     }
 
+    public Cigarette getCigarette() {
+        return cigarette;
+    }
+
+    public void setCigarette(Cigarette cigarette) {
+        this.cigarette = cigarette;
+    }
+
     public int getScore(){
         int score = 0;
         score += ChronoUnit.DAYS.between(getStoppedSmokingDate(), LocalDateTime.now()) * 10;
         score -= getTimesSmokedSinceStart();
         return score;
     }
-
 
     public String getId() {
         return id;
@@ -105,15 +94,15 @@ public class User implements Comparable<User>{
     }
 
     public double getAmountAddedPerSecond() {
-        return amountAddedPerSecond;
+        double perDay = cigarette.getPrice() * timesADay;
+        double perHour = perDay/24;
+        double perMinute = perHour/60;
+        double perSecond = perMinute/60;
+        return perSecond;
     }
 
     public LocalDateTime getStoppedSmokingDate() {
         return stoppedSmokingDate;
-    }
-
-    public void setAmountAddedPerSecond(double amountAddedPerSecond) {
-        this.amountAddedPerSecond = amountAddedPerSecond;
     }
 
     public void setStoppedSmokingDate(LocalDateTime stoppedSmokingDate) {
@@ -129,11 +118,7 @@ public class User implements Comparable<User>{
     }
 
     public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
+        return cigarette.getPrice();
     }
 
     public int getTimesADay() {
