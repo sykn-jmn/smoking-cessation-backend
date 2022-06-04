@@ -64,8 +64,6 @@ public class GeneralController {
             value = "/login",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<String> login(@RequestBody SubModels.Login loginData){
-        System.out.println(loginData.getUsername()+" loggedIn");
-        System.out.println("Password is "+loginData.getPassword());
         return new ResponseEntity<>(userService.login(loginData), HttpStatus.OK);
     }
 }

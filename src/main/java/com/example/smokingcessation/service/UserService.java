@@ -220,10 +220,14 @@ public class UserService {
             User user = userOptional.get();
             String hashedPassword = MD5Utils.hash(loginData.getPassword());
             if(hashedPassword.equals(user.getPassword())){
-                sessionRepository.removeSessionByUserID(user.getId());
-                Session session = new Session(user.getId());
-                sessionRepository.save(session);
-                sessionId = session.getUuid();
+                Optional<Session> session = sessionRepository.findSessionByUserID(user.getId());
+                if(session.isPresent()){
+                    sessionId = session.get().getUuid();
+                }else{
+                    Session newSession = new Session(user.getId());
+                    Session updatedNewSession = sessionRepository.save(newSession);
+                    sessionId = updatedNewSession.getUuid();
+                }
             }else{
                 return "Invalid Login";
             }

@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface SessionRepository extends MongoRepository<Session, String> {
     Long removeSessionByUserID(String id);
     Optional<Session> findSessionByUuid(String uuid);
+    Optional<Session> findSessionByUserID(String id);
     void removeSessionByUuid(String uuid);
 }
