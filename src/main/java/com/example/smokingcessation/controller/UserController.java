@@ -57,14 +57,6 @@ public class UserController {
         return userProfile;
     }
 
-//    @PostMapping(
-//            value = "/login",
-//            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-//    public ResponseEntity<SubModels.ResponseUser> login(@RequestBody SubModels.Login loginData){
-//        SubModels.ResponseUser user = userService.login(loginData.getUsername(), loginData.getPassword());
-//        return new ResponseEntity<>(user,user==null?HttpStatus.NO_CONTENT:HttpStatus.OK);
-//    }
-
     @PostMapping(
             value = "/post",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

@@ -112,8 +112,8 @@ public class UserService {
         }
         Session session = sessionOptional.get();
         String userID = session.getUserID();
-        User user = userRepository.findById(userID).get();
-        return user.getStoppedSmokingDate();
+        LocalDateTime stoppedSmokingDate = smokingRecordRepository.findFirstByUser_IdOrderByDateTimeDesc(userID).getDateTime();
+        return stoppedSmokingDate;
     }
 
     public Double getAmountAddedPerSecond(String id){
@@ -297,9 +297,8 @@ public class UserService {
         }
         Session session = sessionOptional.get();
         String userID = session.getUserID();
-        User user = userRepository.findById(userID).get();
         System.out.println("Getting Smoking Records");
-        List<SmokingRecord> smokingRecords = smokingRecordRepository.findByUserOrderByDateTimeAsc(user);
+        List<SmokingRecord> smokingRecords = smokingRecordRepository.findByUser_IdOrderByDateTimeAsc(userID);
         System.out.println("Finished Getting Smoking Records");
         return smokingRecords;
     }

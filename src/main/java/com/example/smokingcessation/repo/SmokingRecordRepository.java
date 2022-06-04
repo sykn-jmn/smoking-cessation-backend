@@ -7,5 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface SmokingRecordRepository extends MongoRepository<SmokingRecord, String> {
-    public List<SmokingRecord> findByUserOrderByDateTimeAsc(User user);
+    public List<SmokingRecord> findByUser_IdOrderByDateTimeAsc(String id);
+    public SmokingRecord findFirstByUser_IdOrderByDateTimeDesc(String id);
 }
+
