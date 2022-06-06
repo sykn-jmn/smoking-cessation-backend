@@ -12,9 +12,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-//@Configuration
+@Configuration
 public class DailyChallengesConfig {
-//    @Bean
+    @Bean
     CommandLineRunner commandLineRunnerChallenge(DailyChallengesRepository repository){
         return args -> {
             ArrayList<DailyChallenge> dailyChallenges = new ArrayList<>();
