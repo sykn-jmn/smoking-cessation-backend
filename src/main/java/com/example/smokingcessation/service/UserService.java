@@ -112,8 +112,15 @@ public class UserService {
         }
         Session session = sessionOptional.get();
         String userID = session.getUserID();
-        LocalDateTime stoppedSmokingDate = smokingRecordRepository.findFirstByUser_IdOrderByDateTimeDesc(userID).getDateTime();
-        return stoppedSmokingDate;
+        Optional<SmokingRecord> latestSmokingRecord = smokingRecordRepository.findFirstByUser_IdOrderByDateTimeDesc(userID);
+        if(latestSmokingRecord.isPresent()){
+            System.out.println("DateTime: "+ latestSmokingRecord.get().getDateTime());
+            return latestSmokingRecord.get().getDateTime();
+        }else{
+            User user = userRepository.findById(userID).get();
+            System.out.println("Starting Date: "+ user.getStartingDate());
+            return user.getStartingDate();
+        }
     }
 
     public Double getAmountAddedPerSecond(String id){
