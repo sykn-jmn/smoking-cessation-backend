@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class UserController {
     @GetMapping("/stoppedSmokingDate/{sessionID}")
     public ResponseEntity<LocalDateTime> getStoppedSmokingDate(@PathVariable("sessionID")String sessionID){
         System.out.println(sessionID);
-        return new ResponseEntity<>(userService.getStoppedSmokingDate(sessionID), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getStoppedSmokingDate(sessionID).plus(8, ChronoUnit.HOURS), HttpStatus.OK);
     }
 
     @GetMapping("/profileInfo/{sessionID}")
