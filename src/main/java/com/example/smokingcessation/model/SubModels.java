@@ -5,6 +5,93 @@ import java.time.LocalDateTime;
 
 public class SubModels {
 
+    public static class NewSmokingRecord {
+        LocalDateTime dateTime;
+        Integer quantity;
+        String cigaretteId;
+
+
+        public NewSmokingRecord() {
+        }
+
+        public NewSmokingRecord(LocalDateTime dateTime, Integer quantity, String cigaretteId) {
+            this.dateTime = dateTime;
+            this.quantity = quantity;
+            this.cigaretteId = cigaretteId;
+        }
+
+        public LocalDateTime getDateTime() {
+            return dateTime;
+        }
+
+        public void setDateTime(LocalDateTime dateTime) {
+            this.dateTime = dateTime;
+        }
+
+        public Integer getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(Integer quantity) {
+            this.quantity = quantity;
+        }
+
+        public String getCigaretteId() {
+            return cigaretteId;
+        }
+
+        public void setCigaretteId(String cigaretteId) {
+            this.cigaretteId = cigaretteId;
+        }
+
+    }
+
+    public static class SmokingRecordUpdateDTO{
+        LocalDateTime dateTime;
+        Integer quantity;
+        String cigaretteId;
+        String id;
+
+        public SmokingRecordUpdateDTO(LocalDateTime dateTime, Integer quantity, String cigaretteId, String id) {
+            this.dateTime = dateTime;
+            this.quantity = quantity;
+            this.cigaretteId = cigaretteId;
+            this.id = id;
+        }
+
+        public LocalDateTime getDateTime() {
+            return dateTime;
+        }
+
+        public void setDateTime(LocalDateTime dateTime) {
+            this.dateTime = dateTime;
+        }
+
+        public Integer getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(Integer quantity) {
+            this.quantity = quantity;
+        }
+
+        public String getCigaretteId() {
+            return cigaretteId;
+        }
+
+        public void setCigaretteId(String cigaretteId) {
+            this.cigaretteId = cigaretteId;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+    }
+
     public static class SmokingRecordDTO{
         Integer numberOfTimesSmoked;
 
@@ -520,4 +607,5 @@ public class SubModels {
         public ProfileImageUpdate() {
         }
     }
+
 }

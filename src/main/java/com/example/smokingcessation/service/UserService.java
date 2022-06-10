@@ -1,10 +1,7 @@
 package com.example.smokingcessation.service;
 
 import com.example.smokingcessation.model.*;
-import com.example.smokingcessation.repo.PostRepository;
-import com.example.smokingcessation.repo.SessionRepository;
-import com.example.smokingcessation.repo.SmokingRecordRepository;
-import com.example.smokingcessation.repo.UserRepository;
+import com.example.smokingcessation.repo.*;
 import com.example.smokingcessation.security.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +23,14 @@ public class UserService {
     private final PostRepository postRepository;
     private final SessionRepository sessionRepository;
     private final SmokingRecordRepository smokingRecordRepository;
+    private final CigaretteRepository cigaretteRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, SessionRepository sessionRepository, PostRepository postRepository, SmokingRecordRepository smokingRecordRepository){
+    public UserService(CigaretteRepository cigaretteRepository,UserRepository userRepository, SessionRepository sessionRepository, PostRepository postRepository, SmokingRecordRepository smokingRecordRepository){
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
         this.postRepository = postRepository;
+        this.cigaretteRepository = cigaretteRepository;
         this.smokingRecordRepository = smokingRecordRepository;
     }
 
@@ -323,6 +322,33 @@ public class UserService {
         String userID = session.getUserID();
         User user = userRepository.findById(userID).get();
         SmokingRecord smokingRecord = new SmokingRecord(user, user.getCigarette(), smokingRecordDTO.getNumberOfTimesSmoked(), LocalDateTime.now().plus(8, ChronoUnit.HOURS));
+        smokingRecordRepository.save(smokingRecord);
+        return null;
+    }
+
+    public Void updateSmokingRecord(String sessionID, SubModels.SmokingRecordUpdateDTO smokingRecordUpdateDTO) {
+        System.out.println(smokingRecordUpdateDTO.getDateTime());
+        Cigarette cigarette = cigaretteRepository.findById(smokingRecordUpdateDTO.getCigaretteId()).get();
+        SmokingRecord smokingRecord = smokingRecordRepository.findById(smokingRecordUpdateDTO.getId()).get();
+        smokingRecord.setCigarette(cigarette);
+        smokingRecord.setQuantity(smokingRecordUpdateDTO.getQuantity());
+        smokingRecord.setDateTime(smokingRecordUpdateDTO.getDateTime().plus(8,ChronoUnit.HOURS));
+        smokingRecordRepository.save(smokingRecord);
+        return null;
+    }
+
+    public Void newSmokingRecord(String sessionID, SubModels.NewSmokingRecord newSmokingRecord) {
+        Optional<Session> sessionOptional = sessionRepository.findSessionByUuid(sessionID);
+        if(!sessionOptional.isPresent()){
+            throw new IllegalStateException("Invalid Session");
+        }
+        Session session = sessionOptional.get();
+        String userID = session.getUserID();
+        User user = userRepository.findById(userID).get();
+        Cigarette cigarette = cigaretteRepository.findById(newSmokingRecord.getCigaretteId()).get();
+        SmokingRecord smokingRecord = new SmokingRecord(user, cigarette, newSmokingRecord.getQuantity(), newSmokingRecord.getDateTime().plus(
+                8,ChronoUnit.HOURS
+        ));
         smokingRecordRepository.save(smokingRecord);
         return null;
     }

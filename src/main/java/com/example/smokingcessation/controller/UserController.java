@@ -102,6 +102,16 @@ public class UserController {
         return new ResponseEntity<>(userService.submitSmokingRecord(sessionID, smokingRecordDTO), HttpStatus.OK);
     }
 
+    @PostMapping("/smokingRecordNew/{sessionID}")
+    public ResponseEntity<Void> newSmokingRecord(@PathVariable("sessionID")String sessionID, @RequestBody SubModels.NewSmokingRecord newSmokingRecord){
+        return new ResponseEntity<>(userService.newSmokingRecord(sessionID, newSmokingRecord), HttpStatus.OK);
+    }
+
+    @PutMapping("/smokingRecord/{sessionID}")
+    public ResponseEntity<Void> updateSmokingRecord(@PathVariable("sessionID")String sessionID, @RequestBody SubModels.SmokingRecordUpdateDTO smokingRecordUpdateDTO){
+        return new ResponseEntity<>(userService.updateSmokingRecord(sessionID,smokingRecordUpdateDTO),HttpStatus.OK);
+    }
+
     @GetMapping("/dailyTask/{sessionID}")
     public ResponseEntity<String> getLastShowDailyChallenges(@PathVariable("sessionID") String sessionID){
         LocalDate lastShowDailyChallenge = userService.getLastShowDailyTask(sessionID);
